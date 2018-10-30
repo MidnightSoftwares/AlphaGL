@@ -1,0 +1,8 @@
+[
+    {
+        "name": "Clang (x64)",
+        "compilers": {
+            "CXX": "C:\\msys64\\mingw64\\bin\\clang++.exe"
+        }
+    }
+]
