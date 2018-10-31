@@ -34,7 +34,6 @@ int Registry::parent(int entity) const {
     return entities_[entity].parent;
 }
 
-// FIXME: If entity has children, their depth should be updated
 // NOTE: Possible issues:
 // - depth=1, setParent(parentDepth=2), depth=2 => will be processed twice
 // - depth=1, childrenDepth=2, removeParent, depth=0, childrenDepth=1
@@ -87,6 +86,11 @@ void Registry::setParent(int entity, int parent) {
             cIdComponents[entity] = oldCIdComponents[entity];
             oldCIdComponents[entity].reset();
         }
+    }
+
+    // TODO: Implement a more optimized way of changing children depth
+    for (const int child : state.children) {
+        setParent(child, entity);
     }
 }
 
