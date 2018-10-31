@@ -1,20 +1,7 @@
 {
-    // Terminal
-    "terminal.integrated.shell.windows": "C:\\msys64\\usr\\bin\\bash.exe",
-    "terminal.integrated.shellArgs.windows": [
-        "--login",
-        "-i"
+    "cmake.configureArgs": [
+        "-DCMAKE_TOOLCHAIN_FILE=C:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
+        "-DVCPKG_TARGET_TRIPLET=x64-windows-static"
     ],
-    "terminal.integrated.env.windows": {
-        "MSYSTEM": "MINGW64",
-        "CHERE_INVOKING": "1"
-    },
-    // C++
-    "C_Cpp.clang_format_path": "C:\\msys64\\mingw64\\bin\\clang-format.exe",
-    // Cmake
-    "cmake.cmakePath": "C:\\msys64\\mingw64\\bin\\cmake.exe",
-    "cmake.configureSettings": {
-        "CMAKE_MAKE_PROGRAM": "C:\\msys64\\mingw64\\bin\\mingw32-make.exe"
-    },
-    "cmake.generator": "MinGW Makefiles"
+    "C_Cpp.default.configurationProvider": "vector-of-bool.cmake-tools"
 }

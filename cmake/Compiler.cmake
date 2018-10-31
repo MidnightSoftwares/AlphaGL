@@ -27,41 +27,15 @@ if (GCC OR Clang)
         )
     endif()
 elseif (MSVC)
-    # Suppress W3 flag
+    # Set /W4 flag
     if (CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-        string(REGEX REPLACE "/W[0-4]" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+        string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
     else()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
     endif()
 
-    # Replace /MD with /MT
-    # set(MSVC_CXX_FLAGS
-    #     CMAKE_CXX_FLAGS_DEBUG
-    #     CMAKE_CXX_FLAGS_MINSIZEREL
-    #     CMAKE_CXX_FLAGS_RELEASE
-    #     CMAKE_CXX_FLAGS_RELWITHDEBINFO
-    # )
-    # if (${VCPKG_TARGET_TRIPLET} MATCHES "static")
-    #     foreach (flag ${MSVC_CXX_FLAGS})
-    #         if (${flag} MATCHES "/MD")
-    #             string(REGEX REPLACE "/MD" "/MT" ${flag} "${${flag}}")
-    #         endif()
-    #     endforeach()
-    #     set(VCPKG_CRT_LINKAGE "static")
-    #     set(VCPKG_LIBRARY_LINKAGE "static")
-    # else()
-    #     foreach (flag ${MSVC_CXX_FLAGS})
-    #         if (${flag} MATCHES "/MT")
-    #             string(REGEX REPLACE "/MT" "/MD" ${flag} "${${flag}}")
-    #         endif()
-    #     endforeach()
-    #     set(VCPKG_CRT_LINKAGE "dynamic")
-    #     set(VCPKG_LIBRARY_LINKAGE "dynamic")
-    # endif()
-
     add_compile_options(
         /permissive- # Enforces standards conformance
-        /W4 # All reasonable warnings
         /w14242 # 'identfier': conversion from 'type1' to 'type1', possible loss of data
         /w14254 # 'operator': conversion from 'type1:field_bits' to 'type2:field_bits', possible loss of data
         /w14263 # 'function': member function does not override any base class virtual member function
@@ -81,8 +55,32 @@ elseif (MSVC)
         /w14905 # Wide string literal cast to 'LPSTR'
         /w14906 # String literal cast to 'LPWSTR'
         /w14928 # Illegal copy-initialization; more than one user-defined conversion has been implicitly applied
+
+        /wd4996 # Suppress C4996
     )
 
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS) # Suppress C4996
-    add_definitions(-D_SCL_SECURE_NO_WARNINGS) # ???
+    # Set correct /MD or /MT flags depending on vcpkg triplet
+    set(MSVC_CXX_FLAGS
+        CMAKE_CXX_FLAGS_DEBUG
+        CMAKE_CXX_FLAGS_MINSIZEREL
+        CMAKE_CXX_FLAGS_RELEASE
+        CMAKE_CXX_FLAGS_RELWITHDEBINFO
+    )
+    if (${VCPKG_TARGET_TRIPLET} MATCHES "static")
+        foreach (flag ${MSVC_CXX_FLAGS})
+            if (${flag} MATCHES "/MD")
+                string(REGEX REPLACE "/MD" "/MT" ${flag} "${${flag}}")
+            endif()
+        endforeach()
+        set(VCPKG_CRT_LINKAGE "static")
+        set(VCPKG_LIBRARY_LINKAGE "static")
+    else()
+        foreach (flag ${MSVC_CXX_FLAGS})
+            if (${flag} MATCHES "/MT")
+                string(REGEX REPLACE "/MT" "/MD" ${flag} "${${flag}}")
+            endif()
+        endforeach()
+        set(VCPKG_CRT_LINKAGE "dynamic")
+        set(VCPKG_LIBRARY_LINKAGE "dynamic")
+    endif()
 endif()

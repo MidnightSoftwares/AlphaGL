@@ -13,13 +13,31 @@ add_executable(Alpha
 if (MSVC)
     target_compile_options(Alpha PRIVATE
         /std:c++17 # C++ standard
-        /EHsc- # Disable exceptions (not sure if the flag is correct)
     )
+
+    # Disable exceptions
+    if (CMAKE_CXX_FLAGS MATCHES "/EHsc")
+        string(REGEX REPLACE "/EHsc" "/EHsc-" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+    else()
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHSC-")
+    endif()
 else()
     target_compile_options(Alpha PRIVATE
         -std=c++17 # C++ standard
         -fno-exceptions # Disable exceptions
     )
+endif()
+
+# Compile definitions
+if (CMAKE_BUILD_TYPE MATCHES "Debug")
+    target_compile_definitions(Alpha PRIVATE _DEBUG)
+
+    if (MSVC)
+        # Disable MSVC verified iterators for better debug performance
+        target_compile_definitions(Alpha PRIVATE _ITERATOR_DEBUG_LEVEL=0)
+    endif()
+else()
+    target_compile_definitions(Alpha PRIVATE NDEBUG)
 endif()
 
 # OpenGL
@@ -28,8 +46,7 @@ target_link_libraries(Alpha PRIVATE OpenGL::GL)
 
 # SDL2
 find_package(SDL2 CONFIG REQUIRED)
-target_include_directories(Alpha PRIVATE ${SDL2_INCLUDE_DIRS})
-target_link_libraries(Alpha PRIVATE ${SDL2_LIBRARIES})
+target_link_libraries(Alpha PRIVATE SDL2::SDL2main SDL2::SDL2-static)
 
 # glew
 find_package(GLEW REQUIRED)
