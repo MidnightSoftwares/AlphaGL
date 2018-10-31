@@ -4,7 +4,8 @@ WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
 FormatStyle:     file
-CheckOptions:    
+User:            MidnightSoftwares
+CheckOptions:
   - key:             abseil-string-find-startswith.AbseilStringsMatchHeader
     value:           absl/strings/match.h
   - key:             abseil-string-find-startswith.IncludeStyle
@@ -304,4 +305,3 @@ CheckOptions:
   - key:             zircon-temporary-objects.Names
     value:           ''
 ...
-

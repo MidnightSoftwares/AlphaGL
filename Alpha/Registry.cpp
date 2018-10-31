@@ -88,7 +88,7 @@ void Registry::setParent(int entity, int parent) {
         }
     }
 
-    // TODO: Implement a more optimized way of changing children depth
+    // TODO(MidnightSoftwares): Implement a more optimized way of changing children depth
     for (const int child : state.children) {
         setParent(child, entity);
     }
