@@ -14,7 +14,7 @@
     GLUE(OVERLOAD_MACRO(name, COUNT_ARGS_MAX5(__VA_ARGS__)), (__VA_ARGS__))
 
 #ifdef _DEBUG
-#define DEBUG_ONLY(expr) expr
+#    define DEBUG_ONLY(expr) expr
 #else
-#define DEBUG_ONLY(expr)
+#    define DEBUG_ONLY(expr)
 #endif
