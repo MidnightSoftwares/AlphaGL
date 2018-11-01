@@ -1,4 +1,8 @@
-﻿#include "Registry.h"
+﻿#include "core/Registry.h"
+
+#include "components/Transform.h"
+
+#include "systems/TransformSystem.h"
 
 #include <SDL2/SDL.h>
 
@@ -41,6 +45,17 @@ int main(int /*argc*/, char* /*argv*/[]) {
     // Application init
     Registry registry;
 
+    const Entity e1 = registry.create();
+    registry.assign<Transform>(e1);
+
+    const Entity e2 = registry.create();
+    registry.setParent(e2, e1);
+    registry.assign<Transform>(e2);
+
+    const Entity e3 = registry.create();
+    registry.setParent(e3, e2);
+    registry.assign<Transform>(e3);
+
     // Application loop
     bool quit{};
     while (!quit) {
@@ -64,7 +79,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
         }
 
         // Fixed update
-        //
+        TransformSystem::update(registry);
 
         // Frame update
         glClear(GL_COLOR_BUFFER_BIT);
@@ -78,5 +93,6 @@ int main(int /*argc*/, char* /*argv*/[]) {
     SDL_GL_DeleteContext(context);
     SDL_DestroyWindow(window);
     SDL_Quit();
+
     return EXIT_SUCCESS;
 }

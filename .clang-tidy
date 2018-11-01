@@ -1,5 +1,5 @@
 ---
-Checks: '*, -clang-diagnostic-pragma-pack, -hicpp-signed-bitwise, -llvm-include-order'
+Checks: '*, -clang-diagnostic-pragma-pack, -hicpp-signed-bitwise, -llvm-include-order, -google-runtime-references'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false

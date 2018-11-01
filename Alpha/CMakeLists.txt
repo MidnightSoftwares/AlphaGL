@@ -2,9 +2,12 @@
 
 # Target
 add_executable(Alpha
-    Helpers.h
-    Assert.h
-    Registry.cpp Registry.h Registry.inl
+    core/Helpers.h
+    core/Assert.h
+    core/Entity.h
+    core/Registry.h core/Registry.inl core/Registry.cpp
+    components/Transform.h components/Transform.cpp
+    systems/TransformSystem.h systems/TransformSystem.cpp
     Alpha.cpp
 )
 
@@ -54,7 +57,15 @@ target_link_libraries(Alpha PRIVATE GLEW::GLEW)
 
 # glm
 find_package(glm CONFIG REQUIRED)
+if (MSVC)
+    target_compile_options(Alpha PRIVATE /wd4201)
+endif()
+target_compile_definitions(Alpha PRIVATE GLM_ENABLE_EXPERIMENTAL)
 target_link_libraries(Alpha PRIVATE glm)
+
+# entt
+find_path(ENTT_INCLUDE_DIR entt/entt.hpp)
+target_include_directories(Alpha PRIVATE ${ENTT_INCLUDE_DIR})
 
 # clang-tidy
 if (CMAKE_CXX_CLANG_TIDY)
