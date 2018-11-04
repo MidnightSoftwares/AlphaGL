@@ -34,6 +34,9 @@ void Registry::destroy(Entity entity) {
 }
 
 void Registry::setParent(Entity entity, Entity parent) {
+    DEBUG_ASSERT(valid(entity));
+    DEBUG_ASSERT(parent == NullEntity || valid(parent));
+
     auto& hierarchy = get<Hierarchy>(entity);
     const Entity oldParent = hierarchy.parent_;
 

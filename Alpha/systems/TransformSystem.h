@@ -1,9 +1,17 @@
 #pragma once
 
 class Registry;
+class Hierarchy;
+class Transform;
 
-namespace TransformSystem {
+class TransformSystem {
+public:
+    TransformSystem() = delete;
 
-void update(Registry& registry);
+public:
+    static void update(Registry& registry);
 
-}
+private:
+    static void updateModelMatrix(Registry& registry, const Hierarchy& hierarchy,
+                                  Transform& transform);
+};
