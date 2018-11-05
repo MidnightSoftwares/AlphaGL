@@ -5,6 +5,7 @@ add_executable(Alpha
     core/Helpers.h
     core/Assert.h
     core/Entity.h
+    core/Window.h core/Window.cpp
     core/Registry.h core/Registry.inl core/Registry.cpp
     components/Transform.h components/Transform.cpp
     systems/TransformSystem.h systems/TransformSystem.cpp
