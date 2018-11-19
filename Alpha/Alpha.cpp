@@ -1,4 +1,4 @@
-﻿#include "core/Registry.h"
+#include "core/Registry.h"
 #include "core/Window.h"
 
 #include "components/Transform.h"

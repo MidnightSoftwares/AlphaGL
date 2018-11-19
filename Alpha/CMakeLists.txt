@@ -1,4 +1,4 @@
-﻿cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.8)
 
 # Target
 add_executable(Alpha
@@ -33,15 +33,19 @@ else()
 endif()
 
 # Compile definitions
-if (CMAKE_BUILD_TYPE MATCHES "Debug")
-    target_compile_definitions(Alpha PRIVATE _DEBUG)
+target_compile_definitions(Alpha PRIVATE
+    $<$<CONFIG:Debug>:
+    _DEBUG
+    >
 
-    if (MSVC)
-        # Disable MSVC verified iterators for better debug performance
-        target_compile_definitions(Alpha PRIVATE _ITERATOR_DEBUG_LEVEL=0)
-    endif()
-else()
-    target_compile_definitions(Alpha PRIVATE NDEBUG)
+    $<$<NOT:$<CONFIG:Debug>>:
+    NDEBUG
+    >
+)
+
+if (MSVC)
+    # Disable MSVC verified iterators for better debug performance
+    target_compile_definitions(Alpha PRIVATE $<$<CONFIG:Debug>:_ITERATOR_DEBUG_LEVEL=0>)
 endif()
 
 # OpenGL
